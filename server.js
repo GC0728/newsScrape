@@ -46,7 +46,6 @@ app.get("/scrape", function(req, res) {
         .text(),
         console.log(result.headline);
             
-
         result.url = $(this)
         .find(".BiNC74axuTz66dlnEgicY")
         .children("a")
@@ -55,10 +54,10 @@ app.get("/scrape", function(req, res) {
 
         db.Article.create(result)
             .then(function(dbArticle) {
-                // console.log(dbArticle);
+                console.log(dbArticle);
             })
             .catch(function(err) {
-                // console.log(err);
+                console.log(err);
             });
         });
         res.send("Scrape Complete");
@@ -68,9 +67,9 @@ app.get("/scrape", function(req, res) {
 });
 
 // Main Route
-app.get("/", function(req, res) {
+// app.get("/", function(req, res) {
 
-});
+// });
 
 // Retrieve data from the database
 app.get("/all", function(req, res) {
@@ -85,7 +84,13 @@ app.get("/all", function(req, res) {
 });
 
 app.get("/articles", function(req, res) {
-    res.json
+    db.Article.find({})
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
 });
 
 app.get("/articles/:id", function(req, res) {
