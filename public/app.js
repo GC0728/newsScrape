@@ -11,14 +11,15 @@ $(document).on("click", "p", function() {
 
     $.ajax({
         method: "GET",   
-        url: "/articles"
+        url: "/articles/" + thisId
     })
         .then(function(data) {
             console.log(data);
             $("#notes").append("<h2>" + data.headline + "</h2>");
-            $("#notes").append("<input id='headlineinput' name='headline' >");
-            $("notes").append("<textarea id='bodyinput' name='body'></textarea");
-            $("notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+            $("#notes").append("<input id='headlineinput' name='headline'>");
+            $("#notes").append("<textarea id='bodyinput' name='body'>");
+            $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");            
+
 
             if (data.note) {
                 $("#headlineinput").val(data.note.headline);
