@@ -29,21 +29,50 @@ var databaseUrl = "scraper";
 var collections = ["scrapedData"];
 
 // Hook Mongojs configuration to the database variable
-var db = mongojs(databaseUrl, collections);
-db.on("error", function(error) {
-    console.log("Database Error:", error);
+// var db = mongojs(databaseUrl, collections);
+// db.on("error", function(error) {
+//     console.log("Database Error:", error);
+// });
+
+// Scrape data from website and place in mongodb
+app.get("/scrape", function(req, res) {
+    axios.get("https://www.reddit.com/r/news/").then(function(response) {
+        var $ = cheerio.load(response.data);
+        $("article div div div div").each(function(i, element) {
+        var result = {};
+
+        result.headline = $(this)
+        .children("h3")
+        .text()
+        console.log(result.headline);
+
+        result.url = $(this)
+        .children("a")
+        .attr("href");
+        console.log(result.url)
+
+        db.Article.create(result)
+            .then(function(dbArticle) {
+                // console.log(dbArticle);
+            })
+            .catch(function(err) {
+                // console.log(err);
+            });
+        });
+        res.send("Scrape Complete");
+    });
 });
 
 // Main Route
 app.get("/", function(req, res) {
-    axios.get
+
 });
 
 // Retrieve data from the database
 app.get("/all", function(req, res) {
     db.scrapedData.find({}, function(error, found) {
         if (error) {
-            console.log(error);
+            // console.log(error);
         }
         else {
             res.json(found);
@@ -51,30 +80,8 @@ app.get("/all", function(req, res) {
     });
 });
 
-// Scrape data from website and place in mongodb
-app.get("/scrape", function(req, res) {
-    axios.get("https://www.nbc12.com/news/").then(function(response) {
-        var $ = cheerio.load(response.data);
-    $("h4").each(function(i, element) {
-        var result = {};
-        
-        result.title = $(this)
-        .children("a")
-        .text();
-        result.link = $(this)
-        .children("a")
-        .attr("href");
-
-        db.Article.create(result)
-            .then(function(dbArticle) {
-                console.log(dbArticle);
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
-        });
-        res.send("Scrape Complete");
-    });
+app.get("/articles", function(req, res) {
+    res.json
 });
 
 app.get("/articles/:id", function(req, res) {

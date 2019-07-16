@@ -47,3 +47,5 @@ $(document).on("click", "#savenote", function() {
         $("#titleinput").val("");
         $("#bodyinput").val("");
 });
+
+// onload event to execute scrape and populate scraped articles
