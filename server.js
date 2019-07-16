@@ -38,15 +38,17 @@ var collections = ["scrapedData"];
 app.get("/scrape", function(req, res) {
     axios.get("https://www.reddit.com/r/news/").then(function(response) {
         var $ = cheerio.load(response.data);
-        $("article div div div div").each(function(i, element) {
+        $("article").each(function(i, element) {
         var result = {};
 
         result.headline = $(this)
-        .children("h3")
-        .text()
+        .find("h3")
+        .text(),
         console.log(result.headline);
+            
 
         result.url = $(this)
+        .find(".BiNC74axuTz66dlnEgicY")
         .children("a")
         .attr("href");
         console.log(result.url)
@@ -60,6 +62,8 @@ app.get("/scrape", function(req, res) {
             });
         });
         res.send("Scrape Complete");
+
+
     });
 });
 
