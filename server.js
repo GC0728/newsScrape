@@ -72,7 +72,7 @@ app.get("/scrape", function(req, res) {
 // });
 
 // Retrieve data from the database
-app.get("/all", function(req, res) {
+app.get("/", function(req, res) {
     db.scrapedData.find({}, function(error, found) {
         if (error) {
             // console.log(error);
